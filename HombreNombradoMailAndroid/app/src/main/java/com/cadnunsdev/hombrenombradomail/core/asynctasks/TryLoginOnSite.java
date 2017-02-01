@@ -25,7 +25,7 @@ public class TryLoginOnSite extends AsyncTask<Void,String,Document> {
 
 
     public interface onSuccess{
-        void act(Document doc);
+        void act(Document doc, String sessionCookie);
     }
 
     public static class FormData{
@@ -46,7 +46,7 @@ public class TryLoginOnSite extends AsyncTask<Void,String,Document> {
     @Override
     protected void onPostExecute(Document document) {
         if(document != null){
-            _onSucess.act(document);
+            _onSucess.act(document,_sessionCookie.toString());
         }
     }
 

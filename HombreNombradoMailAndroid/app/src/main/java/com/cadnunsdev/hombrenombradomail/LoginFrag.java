@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.cadnunsdev.hombrenombradomail.core.LoginManager;
 import com.cadnunsdev.hombrenombradomail.core.asynctasks.TryLoginOnSite;
 import com.cadnunsdev.hombrenombradomail.core.dbentities.Login;
 
@@ -50,7 +51,7 @@ public class LoginFrag extends Fragment {
     private String _mailBoxLink;
     private ListView _listViewLogins;
     private ArrayList<Login> _loginsSalvos;
-    private ArrayAdapter _adapter;
+    private ArrayAdapter<Login> _adapter;
 
     public LoginFrag() {
         // Required empty public constructor
@@ -98,7 +99,7 @@ public class LoginFrag extends Fragment {
         _edtPW = (EditText)_fragmentView.findViewById(R.id.edtLoginPW);
         _listViewLogins = (ListView)_fragmentView.findViewById(R.id.lvwLoginsSalvos);
         _loginsSalvos = new ArrayList<>(Login.listAll(Login.class));
-        _adapter = new ArrayAdapter(_fragmentView.getContext(),android.R.layout.simple_list_item_1,_loginsSalvos);
+        _adapter = new ArrayAdapter<>(_fragmentView.getContext(),android.R.layout.simple_list_item_1,_loginsSalvos);
         _listViewLogins.setAdapter(_adapter);
 
         _listViewLogins.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -109,7 +110,7 @@ public class LoginFrag extends Fragment {
                 try {
                     TryLoginOnSite worker = new TryLoginOnSite(new TryLoginOnSite.onSuccess() {
                         @Override
-                        public void act(Document doc) {
+                        public void act(Document doc, String cookie) {
                             _mailBoxLink = doc.select("#mainNavLinks > li:nth-child(3) > a").attr("href");
                             Toast.makeText(_fragmentView.getContext(), doc.select("#content-apps > h2").text(), Toast.LENGTH_LONG).show();
                         }
@@ -139,21 +140,20 @@ public class LoginFrag extends Fragment {
             public void onClick(View view) {
 
                 List<Login> findLogin = Login.find(Login.class,"nome_usuario = ?",_edtUserName.getText().toString());
-                Login login = findLogin.size() > 0 ? findLogin.get(0) : new Login();
+                final Login login = findLogin.size() > 0 ? findLogin.get(0) : new Login();
                 login.setNomeUsuario(_edtUserName.getText().toString());
                 login.setSenha(_edtPW.getText().toString());
                 login.save();
                 updateListaLogins();
 
                 try {
-                    TryLoginOnSite worker = new TryLoginOnSite(new TryLoginOnSite.onSuccess() {
+                    final TryLoginOnSite worker = new TryLoginOnSite(new TryLoginOnSite.onSuccess() {
                         @Override
-                        public void act(Document doc) {
+                        public void act(Document doc,String cookie) {
                             _mailBoxLink = doc.select("#mainNavLinks > li:nth-child(3) > a").attr("href");
                             Toast.makeText(_fragmentView.getContext(), doc.select("#content-apps > h2").text(), Toast.LENGTH_LONG).show();
+                            LoginManager.login(login,_mailBoxLink,cookie);
                         }
-
-
                     });
                     worker.setFormData(new TryLoginOnSite.FormData(_edtUserName.getText().toString(),_edtPW.getText().toString()));
                     worker.execute();
