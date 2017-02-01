@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -52,6 +53,7 @@ public class LoginFrag extends Fragment {
     private ListView _listViewLogins;
     private ArrayList<Login> _loginsSalvos;
     private ArrayAdapter<Login> _adapter;
+    private Button _btnLogout;
 
     public LoginFrag() {
         // Required empty public constructor
@@ -95,6 +97,8 @@ public class LoginFrag extends Fragment {
 
     private void configEvents() {
         _btnSubmit = (Button)_fragmentView.findViewById(R.id.btnLoginSubmit);
+        _btnLogout = (Button)_fragmentView.findViewById(R.id.btnLogout);
+        _btnLogout.setVisibility(View.GONE);
         _edtUserName = (EditText)_fragmentView.findViewById(R.id.edtLoginUserName);
         _edtPW = (EditText)_fragmentView.findViewById(R.id.edtLoginPW);
         _listViewLogins = (ListView)_fragmentView.findViewById(R.id.lvwLoginsSalvos);
@@ -106,13 +110,17 @@ public class LoginFrag extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Login login = (Login) adapterView.getItemAtPosition(i);
+                final Login login = (Login) adapterView.getItemAtPosition(i);
                 try {
                     TryLoginOnSite worker = new TryLoginOnSite(new TryLoginOnSite.onSuccess() {
                         @Override
                         public void act(Document doc, String cookie) {
-                            _mailBoxLink = doc.select("#mainNavLinks > li:nth-child(3) > a").attr("href");
+                            _mailBoxLink = TryLoginOnSite.siteBase+ doc.select("#mainNavLinks > li:nth-child(3) > a").attr("href");
                             Toast.makeText(_fragmentView.getContext(), doc.select("#content-apps > h2").text(), Toast.LENGTH_LONG).show();
+                            LoginManager.login(login,_mailBoxLink,cookie);
+                            if(_mailBoxLink != null  && _mailBoxLink.length() > 0){
+                                showOnlyLogout();
+                            }
                         }
                     });
                     worker.setFormData(new TryLoginOnSite.FormData(login.getNomeUsuario(),login.getSenha()));
@@ -150,9 +158,12 @@ public class LoginFrag extends Fragment {
                     final TryLoginOnSite worker = new TryLoginOnSite(new TryLoginOnSite.onSuccess() {
                         @Override
                         public void act(Document doc,String cookie) {
-                            _mailBoxLink = doc.select("#mainNavLinks > li:nth-child(3) > a").attr("href");
+                            _mailBoxLink = TryLoginOnSite.siteBase+ doc.select("#mainNavLinks > li:nth-child(3) > a").attr("href");
                             Toast.makeText(_fragmentView.getContext(), doc.select("#content-apps > h2").text(), Toast.LENGTH_LONG).show();
                             LoginManager.login(login,_mailBoxLink,cookie);
+                            if(_mailBoxLink != null  && _mailBoxLink.length() > 0){
+                                showOnlyLogout();
+                            }
                         }
                     });
                     worker.setFormData(new TryLoginOnSite.FormData(_edtUserName.getText().toString(),_edtPW.getText().toString()));
@@ -164,6 +175,14 @@ public class LoginFrag extends Fragment {
                 }
             }
         });
+    }
+
+    private void showOnlyLogout() {
+        _btnLogout.setVisibility(View.VISIBLE);
+        _btnSubmit.setVisibility(View.GONE);
+        _edtUserName.setVisibility(View.GONE);
+        _edtPW.setVisibility(View.GONE);
+        _listViewLogins.setVisibility(View.GONE);
     }
 
     private void updateListaLogins() {

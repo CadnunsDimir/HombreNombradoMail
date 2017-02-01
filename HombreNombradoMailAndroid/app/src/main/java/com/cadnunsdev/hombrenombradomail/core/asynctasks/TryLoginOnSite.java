@@ -19,6 +19,7 @@ public class TryLoginOnSite extends AsyncTask<Void,String,Document> {
     private String _sessionCookie;
     private FormData _formData;
 
+    public static final String siteBase = "https://apps.jw.org";
     public void setFormData(FormData formData) {
         this._formData = formData;
     }
@@ -53,7 +54,7 @@ public class TryLoginOnSite extends AsyncTask<Void,String,Document> {
     @Override
     protected Document doInBackground(Void... voids) {
         try {
-            Connection connection = Jsoup.connect("https://apps.jw.org/T_LOGIN2")
+            Connection connection = Jsoup.connect(siteBase+"/T_LOGIN2")
                     .data(new HashMap<String, String>(){
                         {
                             this.put("txtUserName",_formData._login);

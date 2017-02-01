@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+    card_view:cardCornerRadius="3dp"
+    card_view:cardElevation="6dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" android:padding="10dp">
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
     <!-- A CardView that contains a TextView -->
-<android.support.v7.widget.CardView
+<LinearLayout
 xmlns:card_view="http://schemas.android.com/apk/res-auto"
 android:id="@+id/card_view"
 android:layout_gravity="center"
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
-card_view:cardCornerRadius="4dp">
+card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="9dp">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,7 +23,7 @@ card_view:cardCornerRadius="4dp">
     android:elevation="1dp"
     android:padding="10dp">
     <TextView
-        android:id="@+id/mail_title"
+        android:id="@+id/email_assunto"
         android:layout_width="match_parent"
         android:layout_height="match_parent" android:text="Titulo Email"
         android:fontFamily="sans-serif"
@@ -29,7 +33,7 @@ card_view:cardCornerRadius="4dp">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/mail_data"
+            android:id="@+id/email_data"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" android:text="Data"
             android:fontFamily="sans-serif"
@@ -37,12 +41,12 @@ card_view:cardCornerRadius="4dp">
             android:textStyle="normal|italic" />
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" android:text=", "
+            android:layout_height="match_parent" android:text=" | "
             android:fontFamily="sans-serif"
             android:textSize="10sp"
-            android:textStyle="normal|italic" />
+            android:textStyle="normal|bold" />
         <TextView
-            android:id="@+id/mail_address"
+            android:id="@+id/email_remetente"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" android:text="remetente"
             android:fontFamily="sans-serif"
@@ -53,5 +57,5 @@ card_view:cardCornerRadius="4dp">
 
 </LinearLayout>
 
-</android.support.v7.widget.CardView>
-    </LinearLayout>
+</LinearLayout>
+    </android.support.v7.widget.CardView>
