@@ -3,11 +3,13 @@ package com.cadnunsdev.hombrenombradomail.core.dbentities;
 import com.orm.SugarRecord;
 import com.orm.dsl.Table;
 
+import java.io.Serializable;
+
 /**
  * Created by Tiago Silva on 31/01/2017.
  */
 
-public class Login extends SugarRecord{
+public class Login extends SugarRecord implements Serializable{
     private String nomeUsuario;
     private String senha;
     private String cookie;

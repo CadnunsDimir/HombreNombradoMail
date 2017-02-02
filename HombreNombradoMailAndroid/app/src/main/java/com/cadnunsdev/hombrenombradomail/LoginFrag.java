@@ -12,11 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.cadnunsdev.hombrenombradomail.core.LoginManager;
 import com.cadnunsdev.hombrenombradomail.core.asynctasks.TryLoginOnSite;
+import com.cadnunsdev.hombrenombradomail.core.asynctasks.onSuccessGetLogin;
+import com.cadnunsdev.hombrenombradomail.core.dbentities.Email;
 import com.cadnunsdev.hombrenombradomail.core.dbentities.Login;
 
 import org.jsoup.nodes.Document;
@@ -26,14 +27,6 @@ import java.util.List;
 
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LoginFrag.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LoginFrag#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class LoginFrag extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,23 +52,6 @@ public class LoginFrag extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFrag.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LoginFrag newInstance(String param1, String param2) {
-        LoginFrag fragment = new LoginFrag();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,7 +88,7 @@ public class LoginFrag extends Fragment {
 
                 final Login login = (Login) adapterView.getItemAtPosition(i);
                 try {
-                    TryLoginOnSite worker = new TryLoginOnSite(new TryLoginOnSite.onSuccess() {
+                    TryLoginOnSite worker = new TryLoginOnSite(new onSuccessGetLogin() {
                         @Override
                         public void act(Document doc, String cookie) {
                             _mailBoxLink = TryLoginOnSite.siteBase+ doc.select("#mainNavLinks > li:nth-child(3) > a").attr("href");
@@ -136,6 +112,7 @@ public class LoginFrag extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Login login = (Login) adapterView.getItemAtPosition(i);
+                Email.deleteAll(Email.class,"login_id = ?", login.getId().toString());
                 login.delete();
 
                 updateListaLogins();
@@ -155,7 +132,7 @@ public class LoginFrag extends Fragment {
                 updateListaLogins();
 
                 try {
-                    final TryLoginOnSite worker = new TryLoginOnSite(new TryLoginOnSite.onSuccess() {
+                    final TryLoginOnSite worker = new TryLoginOnSite(new onSuccessGetLogin() {
                         @Override
                         public void act(Document doc,String cookie) {
                             _mailBoxLink = TryLoginOnSite.siteBase+ doc.select("#mainNavLinks > li:nth-child(3) > a").attr("href");
@@ -165,6 +142,7 @@ public class LoginFrag extends Fragment {
                                 showOnlyLogout();
                             }
                         }
+
                     });
                     worker.setFormData(new TryLoginOnSite.FormData(_edtUserName.getText().toString(),_edtPW.getText().toString()));
                     worker.execute();

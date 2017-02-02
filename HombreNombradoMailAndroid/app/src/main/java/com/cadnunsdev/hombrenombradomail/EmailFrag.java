@@ -45,7 +45,12 @@ public class EmailFrag extends Fragment {
 
     private void ConfigInnerElements(final View rootview) {
         Button btn = (Button)rootview.findViewById(R.id.btnTesteHtml);
-        _emails = new ArrayList<Email>();
+        _emails = new ArrayList<>();
+
+        Login login = LoginManager.getLoggedUser();
+        if(login!= null)
+            _emails.addAll(Email.find(Email.class,"login_id = ?",login.getId().toString()));
+
         recycleView = (RecyclerView)rootview.findViewById(R.id.recycleViewEmails);
         adapter = new EmailAdapter(_emails);
         
@@ -59,7 +64,7 @@ public class EmailFrag extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Login login = LoginManager.getLoggedUser();
+                final Login login = LoginManager.getLoggedUser();
 
                 if(login == null){
                     Toast.makeText(rootview.getContext(),"Realizar o login", Toast.LENGTH_LONG).show();
@@ -73,8 +78,18 @@ public class EmailFrag extends Fragment {
                     .callback(new GetEmailList.Callback() {
                         @Override
                         public void sucesso(List<Email> emails) {
+
+                            for (Email em : emails) {
+                                em.setLoginId(login.getId());
+                                if(Email.find(Email.class,"login_id = ? and titulo = ? and data = ? and end_email = ?", login.getId().toString(),em.getTitulo(),em.getData(),em.getEndEmail()).size() == 0){
+                                    em.save();
+                                }
+                            }
+
+
+
                             _emails.clear();
-                            _emails.addAll(emails);
+                            _emails.addAll(Email.find(Email.class,"login_id = ?",login.getId().toString()));
                             adapter.notifyDataSetChanged();
                             Toast.makeText(rootview.getContext(),"emails: "+ emails.size(), Toast.LENGTH_LONG).show();
                         }

@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class TryLoginOnSite extends AsyncTask<Void,String,Document> {
 
-    private final onSuccess _onSucess;
+    private final onSuccessGetLogin _onSucess;
     private String _sessionCookie;
     private FormData _formData;
 
@@ -24,10 +24,6 @@ public class TryLoginOnSite extends AsyncTask<Void,String,Document> {
         this._formData = formData;
     }
 
-
-    public interface onSuccess{
-        void act(Document doc, String sessionCookie);
-    }
 
     public static class FormData{
         public final String _login;
@@ -39,7 +35,7 @@ public class TryLoginOnSite extends AsyncTask<Void,String,Document> {
         }
     }
 
-    public TryLoginOnSite(onSuccess onSuccess){
+    public TryLoginOnSite(onSuccessGetLogin onSuccess){
         _onSucess = onSuccess;
     }
 

@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cadnunsdev.hombrenombradomail.EmailContentAct;
 import com.cadnunsdev.hombrenombradomail.R;
+import com.cadnunsdev.hombrenombradomail.core.LoginManager;
 import com.cadnunsdev.hombrenombradomail.core.dbentities.Email;
+import com.cadnunsdev.hombrenombradomail.core.dbentities.Login;
 
 import java.util.ArrayList;
 
@@ -69,7 +72,9 @@ public class EmailAdapter extends RecyclerView.Adapter<EmailAdapter.EmailViewHol
         @Override
         public void onClick(View view) {
             Email email = _emails.get(getAdapterPosition());
-            Toast.makeText(_ctx,email.getLinkEmail(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(_ctx,email.getLinkEmail(), Toast.LENGTH_LONG).show();
+            Login login = LoginManager.getLoggedUser();
+            EmailContentAct.showActivity(view.getContext(),email, login);
         }
     }
 }

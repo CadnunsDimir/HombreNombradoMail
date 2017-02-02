@@ -1,10 +1,22 @@
 package com.cadnunsdev.hombrenombradomail.core.dbentities;
 
+import com.orm.SugarRecord;
+
+import java.io.Serializable;
+
 /**
  * Created by Tiago Silva on 01/02/2017.
  */
 
-public class Email {
+public class Email extends SugarRecord implements Serializable{
+
+    private String data;
+    private String endEmail;
+    private String titulo;
+    private String linkEmail;
+    private long loginId;
+
+
     public String getData() {
         return data;
     }
@@ -37,8 +49,11 @@ public class Email {
         this.linkEmail = linkEmail;
     }
 
-    private String data;
-    private String endEmail;
-    private String titulo;
-    private String linkEmail;
+    public long getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(long loginId) {
+        this.loginId = loginId;
+    }
 }

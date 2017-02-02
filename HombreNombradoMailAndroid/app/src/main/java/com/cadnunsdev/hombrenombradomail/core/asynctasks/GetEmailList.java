@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +68,7 @@ public class GetEmailList extends AsyncTask<Void,String,List<Email>> {
                 //{{msgId}}
                 String url = _login.getLinkCaixaEntrada().replace("INBOX","MSGUSRINBOX");
                 String link = url +"?txtAction=VIEWMSG&txtMessageUID={{msgId}}&txtListPage=1&txtSortField=1&txtSortDirection=1";
-                String emailId = el.children().get(1).attr("onclick").split("'")[1];
+                String emailId = URLEncoder.encode(el.children().get(1).attr("onclick").split("'")[1], "UTF-8");
                 email.setLinkEmail(link.replace("{{msgId}}",emailId));
                 emails.add(email);
             }
