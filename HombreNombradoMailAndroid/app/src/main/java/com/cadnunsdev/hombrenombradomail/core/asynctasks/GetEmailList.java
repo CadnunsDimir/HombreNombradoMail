@@ -66,9 +66,12 @@ public class GetEmailList extends AsyncTask<Void,String,List<Email>> {
                 email.setData(el.children().get(3).text());
 
                 //{{msgId}}
-                String url = _login.getLinkCaixaEntrada().replace("INBOX","MSGUSRINBOX");
-                String link = url +"?txtAction=VIEWMSG&txtMessageUID={{msgId}}&txtListPage=1&txtSortField=1&txtSortDirection=1";
-                String emailId = URLEncoder.encode(el.children().get(1).attr("onclick").split("'")[1], "UTF-8");
+                String url = _login.getLinkCaixaEntrada().replace("INBOX","MSGUSRINBOX")+"?";
+                String link = url +"txtAction=VIEWMSG&txtMessageUID={{msgId}}&txtListPage=1&txtSortField=1&txtSortDirection=1";
+
+                String emailId = el.children().get(1).attr("onclick").split("'")[1];
+//                emailId = URLEncoder.encode(emailId, "UTF-8");
+
                 email.setLinkEmail(link.replace("{{msgId}}",emailId));
                 emails.add(email);
             }

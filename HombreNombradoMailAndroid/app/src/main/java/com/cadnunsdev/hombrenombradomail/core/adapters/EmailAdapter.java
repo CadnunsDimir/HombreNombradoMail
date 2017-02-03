@@ -1,6 +1,9 @@
 package com.cadnunsdev.hombrenombradomail.core.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +78,11 @@ public class EmailAdapter extends RecyclerView.Adapter<EmailAdapter.EmailViewHol
 //            Toast.makeText(_ctx,email.getLinkEmail(), Toast.LENGTH_LONG).show();
             Login login = LoginManager.getLoggedUser();
             EmailContentAct.showActivity(view.getContext(),email, login);
+//
+//            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+//            CustomTabsIntent customTabsIntent = builder.build();
+//            Activity activity = (Activity) _ctx;
+//            customTabsIntent.launchUrl(activity, Uri.parse(email.getLinkEmail()));
         }
     }
 }

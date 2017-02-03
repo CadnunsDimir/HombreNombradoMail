@@ -82,6 +82,7 @@ public class LoginFrag extends Fragment {
         _adapter = new ArrayAdapter<>(_fragmentView.getContext(),android.R.layout.simple_list_item_1,_loginsSalvos);
         _listViewLogins.setAdapter(_adapter);
 
+
         _listViewLogins.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

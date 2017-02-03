@@ -56,6 +56,10 @@ public class GetHtml extends AsyncTask<Void,String,Document> {
         try {
             Connection connection = Jsoup.connect(link);
 
+            connection.header("user-agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36)");
+
+            connection.followRedirects(false);
+
             if(sessionCookie != null && sessionCookie.length() > 10){
                 connection.cookie("session", sessionCookie);
             }

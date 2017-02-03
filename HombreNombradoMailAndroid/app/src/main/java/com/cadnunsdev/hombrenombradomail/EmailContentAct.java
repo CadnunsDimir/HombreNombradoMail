@@ -33,7 +33,7 @@ public class EmailContentAct extends AppCompatActivity {
         webView = (WebView)findViewById(R.id.email_html);
         tvAssunto.setText(email.getTitulo());
 
-        GetHtml
+        GetHtml getHtml = GetHtml
             .InstanceOf()
             .setLink(email.getLinkEmail())
             .setSessionCookie(login.getCookie())
@@ -47,7 +47,9 @@ public class EmailContentAct extends AppCompatActivity {
 
                     webView.loadData(html,  "text/html", "UTF-8");
                 }
-            }).execute();
+            });
+//       getHtml.execute();
+
 
     }
 

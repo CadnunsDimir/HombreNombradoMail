@@ -17,6 +17,7 @@ import com.cadnunsdev.hombrenombradomail.core.adapters.EmailAdapter;
 import com.cadnunsdev.hombrenombradomail.core.asynctasks.GetEmailList;
 import com.cadnunsdev.hombrenombradomail.core.dbentities.Email;
 import com.cadnunsdev.hombrenombradomail.core.dbentities.Login;
+import com.cadnunsdev.hombrenombradomail.core.notifications.NotificationAppManager;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -68,6 +69,7 @@ public class EmailFrag extends Fragment {
 
                 if(login == null){
                     Toast.makeText(rootview.getContext(),"Realizar o login", Toast.LENGTH_LONG).show();
+                    NotificationAppManager.gerarNotificacaoTeste(rootview.getContext(),"Realizar o login","Realizar o login");
                     return;
                 }
 
